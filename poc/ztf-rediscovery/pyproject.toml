@@ -1,0 +1,13 @@
+[project]
+name = "ztf-rediscovery"
+version = "0.1.0"
+description = "How much inspection budget would it take to re-find overlooked ZTF nuclear transients?"
+requires-python = ">=3.11"
+dependencies = ["numpy>=2", "requests>=2.32"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
