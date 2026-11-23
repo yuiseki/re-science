@@ -14,7 +14,13 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from features import light_curve_features
+from intervals import newcombe_difference
 from score import CRITERIA, met, tde_likeness
+
+
+# Fixed in EXPERIMENT_PLAN.md before any background object was scored.
+DECISION_THRESHOLD = 5
+NUCLEAR_GROUPS = {"tde", "ant", "ambiguous"}
 
 
 def read_tsv(path):
@@ -76,6 +82,17 @@ def main(truth_tsv, background_tsv, cache_dir) -> int:
             f"{sum(s >= threshold for s in by_class[c])}/{len(by_class[c])}" for c in classes)
         print(f"{threshold}\t{kept}/{len(truth)}\t{kept / len(truth):.2f}\t"
               f"{passing}/{len(background)}\t{per_class}")
+
+    # The decision rule of EXPERIMENT_PLAN.md: nuclear transients against each stratum.
+    print(f"\n## C1: share with score >= {DECISION_THRESHOLD}, nuclear transients minus background stratum")
+    nuclear = [t for t in truth if t["label"] in NUCLEAR_GROUPS]
+    k1 = sum(t["score"] >= DECISION_THRESHOLD for t in nuclear)
+    print("stratum\tnuclear\tbackground\tdifference\tci95_low\tci95_high\tverdict")
+    for c in classes:
+        k2 = sum(s >= DECISION_THRESHOLD for s in by_class[c])
+        d, lo, hi = newcombe_difference(k1, len(nuclear), k2, len(by_class[c]))
+        verdict = "supported" if lo > 0 else "rejected" if d <= 0 else "undecided"
+        print(f"{c}\t{k1}/{len(nuclear)}\t{k2}/{len(by_class[c])}\t{d:+.3f}\t{lo:+.3f}\t{hi:+.3f}\t{verdict}")
 
     print("\n## Ground-truth scores by group")
     groups = defaultdict(Counter)
