@@ -42,3 +42,18 @@ def object_alerts(object_id: str, cache_dir: Path) -> list[dict]:
     path.write_text(json.dumps(rows))
     time.sleep(PAUSE_SECONDS)
     return rows
+
+
+def latest_alerts(fink_class: str, start: str, stop: str, n: int) -> list[dict]:
+    """The last `n` alerts of a Fink class between two dates (ISO strings).
+
+    The server walks back from `stop`, so with a small `n` everything comes
+    from the last observed night of the window. A window with no observing
+    night returns an empty list, not an error.
+    """
+    rows = _post("latests", {
+        "class": fink_class, "n": n, "startdate": start, "stopdate": stop,
+        "columns": "i:objectId,i:jd",
+    }, timeout=300.0)
+    time.sleep(PAUSE_SECONDS)
+    return rows
