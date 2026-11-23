@@ -1,0 +1,13 @@
+[project]
+name = "jp-historical-records"
+version = "0.1.0"
+description = "How much inspection would it take to re-find the station-years JMA marks as inhomogeneous, from annual mean temperature alone?"
+requires-python = ">=3.11"
+dependencies = ["numpy>=2"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

@@ -12,7 +12,10 @@
 ## 中身
 
 - [docs/survey-20-candidates.md](docs/survey-20-candidates.md): 20候補それぞれについて、既にある研究、公開データ、評価器を調べた結果
+- [docs/procedure.md](docs/procedure.md): 分野を問わず使う5段の手順
+- [docs/geoai-skills-for-astronomy.md](docs/geoai-skills-for-astronomy.md): GeoAI-master-skills の手法を天文学にどこまで使えるかの検討
 - [poc/ztf-rediscovery/](poc/ztf-rediscovery/): ZTF のアーカイブで見落とされていた現象を、どれだけの目視の予算で拾い直せるかを測る PoC
+- [poc/jp-historical-records/](poc/jp-historical-records/): 同じ手順を日本の歴史的な気象記録で走らせた2回目。気象庁が均質でないと印を付けた官署の年を、年平均気温だけで拾い直せるかを測った
 
 ## 進め方
 
